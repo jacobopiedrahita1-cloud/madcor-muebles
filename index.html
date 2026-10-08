@@ -9,9 +9,13 @@
   <meta property="og:title" content="MADCOR MUEBLES | Muebles de madera a la medida" />
   <meta property="og:description" content="Cocinas integrales, clósets, escritorios, muebles de baño, camas y remodelaciones en Anserma Caldas. Envíos a toda Colombia." />
   <meta property="og:type" content="website" />
+  <link rel="icon" href="img/favicon.ico" sizes="any" />
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="img/favicon-192.png" type="image/png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Manrope:wght@500;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ===== CSS VARIABLES ===== */
@@ -35,6 +39,8 @@
       --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       --font-head: 'Manrope', sans-serif;
       --font-body: 'DM Sans', sans-serif;
+      --font-display: 'Fraunces', serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* ===== RESET & BASE ===== */
@@ -47,6 +53,7 @@
       overflow-x: hidden;
       opacity: 0;
       animation: fadeInPage 0.8s ease 0.2s forwards;
+      -webkit-tap-highlight-color: transparent;
     }
     @keyframes fadeInPage { to { opacity: 1; } }
     img { max-width: 100%; height: auto; display: block; }
@@ -56,6 +63,40 @@
     .container { max-width: 1180px; margin: 0 auto; }
     h1, h2, h3 { font-family: var(--font-head); }
     button { font-family: inherit; cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+    /* Feedback táctil: todo elemento accionable responde al toque/clic */
+    .btn-primary, .btn-secondary, .btn-form, .nav-cta, .nav-links a, .nav-mobile a,
+    .service-card, .portfolio-item, .guarantee-card, .about-pill, .footer-social,
+    .lightbox-close, .lightbox-nav, .to-top, .whatsapp-btn, .hamburger, .review-card {
+      transition: transform 0.16s var(--ease-out), background-color 0.2s ease, color 0.2s ease,
+        border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+    .btn-primary:active, .btn-secondary:active, .btn-form:active, .nav-cta:active,
+    .footer-social:active, .lightbox-close:active, .lightbox-nav:active, .to-top:active,
+    .whatsapp-btn:active, .hamburger:active {
+      transform: scale(0.96);
+    }
+    .service-card:active, .review-card:active, .guarantee-card:active, .about-pill:active {
+      transform: scale(0.98);
+    }
+
+    /* En pantallas táctiles, los hovers con transform pueden quedarse "pegados" tras el toque */
+    @media (hover: hover) and (pointer: fine) {
+      .service-card:hover { transform: translateY(-6px); }
+      .review-card:hover { transform: translateY(-6px); }
+      .guarantee-card:hover { transform: translateY(-4px); }
+      .btn-primary:hover { transform: translateY(-2px); }
+      .btn-form:hover { transform: translateY(-2px); }
+      .portfolio-item:hover img { transform: scale(1.07); }
+      .hero-img-frame:hover img { transform: scale(1.04); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+      html { scroll-behavior: auto; }
+      .reveal { transform: none !important; }
+    }
 
     /* ===== ICONS ===== */
     svg.icon {
@@ -175,13 +216,26 @@
     .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     .nav-mobile {
-      display: none;
+      display: flex;
       flex-direction: column;
       background: rgba(14,14,16,0.98);
-      padding: 16px 24px 24px;
+      padding: 0 24px;
       gap: 4px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: max-height 0.32s var(--ease-out), opacity 0.22s ease,
+        transform 0.28s var(--ease-out), padding 0.32s var(--ease-out);
     }
-    .nav-mobile.open { display: flex; }
+    .nav-mobile.open {
+      max-height: 480px;
+      opacity: 1;
+      transform: none;
+      padding: 16px 24px 24px;
+      pointer-events: auto;
+    }
     .nav-mobile a {
       display: flex; align-items: center; gap: 12px;
       color: rgba(255,255,255,0.8);
@@ -206,7 +260,7 @@
       letter-spacing: 0.01em;
       border: none;
     }
-    .btn-primary:hover { background: #dcbb84; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,164,106,0.5); }
+    .btn-primary:hover { background: #dcbb84; box-shadow: 0 10px 34px rgba(201,164,106,0.35); }
     .btn-primary .icon { width: 18px; height: 18px; }
     .btn-secondary {
       display: inline-flex; align-items: center; gap: 10px;
@@ -282,8 +336,8 @@
       border-top: 1px solid rgba(255,255,255,0.1);
     }
     .hero-stat-num {
-      font-family: var(--font-head);
-      font-size: 2.2rem; font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 2.3rem; font-weight: 600;
       color: var(--gold);
     }
     .hero-stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
@@ -304,9 +358,8 @@
     .hero-img-frame img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.6s ease;
+      transition: transform 0.6s var(--ease-out);
     }
-    .hero-img-frame:hover img { transform: scale(1.04); }
     .hero-img-tag {
       position: absolute; bottom: 20px; left: 20px; right: 20px;
       background: rgba(14,14,16,0.85);
@@ -327,8 +380,8 @@
 
     /* ===== SCROLL REVEAL ===== */
     .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      opacity: 0; transform: translateY(26px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
     }
     .reveal.visible { opacity: 1; transform: none; }
 
@@ -390,7 +443,7 @@
       transform-origin: left;
       transition: var(--transition);
     }
-    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: var(--gold); }
+    .service-card:hover { box-shadow: 0 20px 50px var(--shadow); border-color: var(--gold); }
     .service-card:hover::before { transform: scaleX(1); }
     .service-icon-wrap {
       width: 54px; height: 54px;
@@ -441,7 +494,6 @@
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    .portfolio-item:hover img { transform: scale(1.07); }
     .portfolio-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(180deg, transparent 40%, rgba(14,14,16,0.82) 100%);
@@ -486,8 +538,14 @@
       display: grid; grid-template-columns: 1.4fr 1fr;
       background: var(--white); border-radius: 20px; overflow: hidden;
       max-height: 86vh;
+      transform: scale(0.96) translateY(8px);
+      transition: transform 0.3s var(--ease-out);
     }
-    .lightbox-body img { width: 100%; height: 100%; object-fit: cover; max-height: 86vh; }
+    .lightbox.open .lightbox-body { transform: none; }
+    .lightbox-body img { width: 100%; height: 100%; object-fit: cover; max-height: 86vh; transition: opacity 0.15s ease; }
+    .lightbox-body img.swapping { opacity: 0; }
+    .lightbox-caption > * { transition: opacity 0.15s ease; }
+    .lightbox-caption.swapping > * { opacity: 0; }
     .lightbox-caption { padding: 40px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
     .lightbox-eyebrow { color: var(--gold-deep); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
     .lightbox-title { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--text); }
@@ -507,6 +565,42 @@
     .lightbox-nav.prev { left: 24px; }
     .lightbox-nav.next { right: 24px; }
 
+    /* ===== RESEÑAS ===== */
+    #resenas { background: var(--sand); }
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--sand-2);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .review-card:hover { box-shadow: 0 20px 50px var(--shadow); border-color: var(--gold); }
+    .review-photo { aspect-ratio: 4/3; background: var(--sand-2); }
+    .review-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .review-photo .img-placeholder { min-height: unset; }
+    .review-body { padding: 22px 24px 26px; }
+    .review-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .review-stars .icon { width: 17px; height: 17px; }
+    .review-stars .star-filled { color: var(--gold); }
+    .review-stars .star-empty { color: var(--sand-2); }
+    .review-quote { color: var(--text); font-size: 0.95rem; line-height: 1.65; margin-bottom: 16px; font-style: italic; }
+    .review-author { font-family: var(--font-head); font-weight: 700; font-size: 0.88rem; color: var(--gold-deep); }
+    .review-author span { display: block; font-family: var(--font-body); font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+    .review-cta {
+      background: var(--white);
+      border: 1.5px dashed var(--sand-2);
+      border-radius: var(--radius);
+      padding: 36px;
+      text-align: center;
+    }
+    .review-cta-title { font-family: var(--font-head); font-weight: 800; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
+    .review-cta-desc { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 22px; max-width: 460px; margin-left: auto; margin-right: auto; }
+
     /* ===== ANTES Y DESPUÉS ===== */
     #procesos { background: var(--ink); padding: 90px 24px; }
     #procesos .section-title { color: var(--white); }
@@ -516,11 +610,25 @@
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
+    @property --pos {
+      syntax: '<percentage>';
+      inherits: true;
+      initial-value: 50%;
+    }
     .ba-slider {
       position: relative; border-radius: 16px; overflow: hidden;
       aspect-ratio: 16/10; background: var(--madera-oscura);
       --pos: 50%;
       touch-action: pan-y;
+    }
+    .ba-slider.hint { animation: baHint 1.8s var(--ease-out) 0.2s 1; }
+    @keyframes baHint {
+      0%, 100% { --pos: 50%; }
+      35% { --pos: 30%; }
+      75% { --pos: 70%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ba-slider.hint { animation: none; }
     }
     .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .ba-before-wrap { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
@@ -576,8 +684,8 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.25);
     }
     .about-badge-num {
-      font-family: var(--font-head);
-      font-size: 2.6rem; font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 2.7rem; font-weight: 600;
       color: var(--gold); line-height: 1;
     }
     .about-badge-text { font-size: 0.8rem; opacity: 0.8; margin-top: 4px; }
@@ -612,7 +720,7 @@
       text-align: center; color: var(--white);
       transition: var(--transition);
     }
-    .guarantee-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px var(--shadow-lg); }
+    .guarantee-card:hover { box-shadow: 0 16px 40px var(--shadow-lg); }
     .guarantee-icon { width: 40px; height: 40px; margin: 0 auto 10px; color: var(--gold); }
     .guarantee-icon svg { width: 100%; height: 100%; }
     .guarantee-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
@@ -681,7 +789,7 @@
       border-radius: 10px;
       padding: 14px 16px;
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 16px;
       color: var(--text);
       transition: var(--transition);
       outline: none;
@@ -708,7 +816,6 @@
     }
     .btn-form:hover {
       background: var(--gold-deep);
-      transform: translateY(-2px);
       box-shadow: 0 10px 30px var(--shadow-lg);
     }
     .btn-form .icon { width: 18px; height: 18px; }
@@ -787,7 +894,7 @@
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 6px 30px rgba(37,211,102,0.4);
       transition: var(--transition);
-      animation: waPulse 3s ease infinite;
+      animation: waPulse 2.6s ease 4;
     }
     .whatsapp-btn:hover { transform: scale(1.1); box-shadow: 0 8px 40px rgba(37,211,102,0.6); }
     .whatsapp-btn svg { width: 30px; height: 30px; fill: white; }
@@ -849,6 +956,8 @@
   <!-- ICON SPRITE (sin emojis: set de iconos SVG dibujados a mano, sin dependencias externas) -->
   <svg style="display:none" aria-hidden="true">
     <symbol id="icon-star" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.86L12 17.77l-6.18 3.23L7 14.14 2 9.27l7.1-1.01L12 2z"/></symbol>
+    <symbol id="icon-star-outline" viewBox="0 0 24 24"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.86L12 17.77l-6.18 3.23L7 14.14 2 9.27l7.1-1.01L12 2z"/></symbol>
+    <symbol id="icon-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"/><circle cx="12" cy="14" r="3.5"/></symbol>
     <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 01-12.36 7.55L4 20l1.02-4.55A8.5 8.5 0 1121 11.5z"/></symbol>
     <symbol id="icon-kitchen" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><line x1="6" y1="16" x2="18" y2="16"/></symbol>
@@ -900,6 +1009,7 @@
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#portafolio">Portafolio</a></li>
+        <li><a href="#resenas">Reseñas</a></li>
         <li><a href="#nosotros">Nosotros</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a href="https://wa.me/573206736373?text=Hola%20H%C3%A9ctor%2C%20me%20interesa%20cotizar%20un%20mueble" target="_blank" rel="noopener" class="nav-cta"><svg class="icon"><use href="#icon-chat"/></svg>Cotizar ahora</a></li>
@@ -912,6 +1022,7 @@
       <a href="#inicio" onclick="closeMenu()"><svg class="icon"><use href="#icon-home"/></svg><span>Inicio</span></a>
       <a href="#servicios" onclick="closeMenu()"><svg class="icon"><use href="#icon-grid"/></svg><span>Servicios</span></a>
       <a href="#portafolio" onclick="closeMenu()"><svg class="icon"><use href="#icon-image"/></svg><span>Portafolio</span></a>
+      <a href="#resenas" onclick="closeMenu()"><svg class="icon"><use href="#icon-star"/></svg><span>Reseñas</span></a>
       <a href="#nosotros" onclick="closeMenu()"><svg class="icon"><use href="#icon-user"/></svg><span>Nosotros</span></a>
       <a href="#contacto" onclick="closeMenu()"><svg class="icon"><use href="#icon-pin"/></svg><span>Contacto</span></a>
       <a href="https://wa.me/573206736373?text=Hola%20H%C3%A9ctor%2C%20me%20interesa%20cotizar%20un%20mueble" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;"><svg class="icon"><use href="#icon-chat"/></svg><span>Cotizar por WhatsApp</span></a>
@@ -1131,6 +1242,91 @@
     <button class="lightbox-nav next" id="lightboxNext" aria-label="Siguiente proyecto"><svg class="icon"><use href="#icon-chevron-right"/></svg></button>
   </div>
 
+  <!-- RESEÑAS -->
+  <section id="resenas">
+    <div class="container">
+      <div class="section-header center reveal">
+        <div class="section-label">Lo que dicen de nosotros</div>
+        <h2 class="section-title">Reseñas de <span>Clientes</span></h2>
+        <p class="section-desc">La opinión de quienes ya confiaron en MADCOR. Cada reseña incluye la calificación y, cuando el cliente nos comparte, una foto del mueble terminado.</p>
+      </div>
+      <!--
+        INSTRUCCIONES PARA AGREGAR UNA RESEÑA REAL:
+        1. Copia un bloque completo <div class="review-card reveal"> ... </div>
+        2. Cambia src="img/resenaN.jpg" por la foto que te mande el cliente (guárdala en /img)
+        3. Ajusta cuántos <svg class="icon star-filled"> (llenas) y <svg class="icon star-empty"> (vacías)
+           hay dentro de .review-stars — deben sumar siempre 5 en total (ej: 4 llenas + 1 vacía = 4 estrellas)
+        4. Reemplaza el texto de .review-quote por el comentario del cliente
+        5. Reemplaza el nombre y la ciudad/proyecto en .review-author
+        Los clientes te van a mandar su calificación, comentario y foto por WhatsApp usando el botón
+        "Déjanos tu reseña" de abajo — de ahí sacas el contenido para cada tarjeta nueva.
+      -->
+      <div class="review-grid">
+        <div class="review-card reveal">
+          <div class="review-photo">
+            <img src="img/resena1.jpg" alt="Foto del mueble entregado - reseña de cliente" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="img-placeholder" style="display:none"><svg class="icon"><use href="#icon-camera"/></svg><span>resena1.jpg</span></div>
+          </div>
+          <div class="review-body">
+            <div class="review-stars" aria-label="5 de 5 estrellas">
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+            </div>
+            <p class="review-quote">Aquí va el comentario real del cliente sobre su experiencia con MADCOR MUEBLES.</p>
+            <div class="review-author">Nombre del cliente<span>Ciudad · Tipo de mueble</span></div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-photo">
+            <img src="img/resena2.jpg" alt="Foto del mueble entregado - reseña de cliente" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="img-placeholder" style="display:none"><svg class="icon"><use href="#icon-camera"/></svg><span>resena2.jpg</span></div>
+          </div>
+          <div class="review-body">
+            <div class="review-stars" aria-label="5 de 5 estrellas">
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+            </div>
+            <p class="review-quote">Aquí va el comentario real del cliente sobre su experiencia con MADCOR MUEBLES.</p>
+            <div class="review-author">Nombre del cliente<span>Ciudad · Tipo de mueble</span></div>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="review-photo">
+            <img src="img/resena3.jpg" alt="Foto del mueble entregado - reseña de cliente" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="img-placeholder" style="display:none"><svg class="icon"><use href="#icon-camera"/></svg><span>resena3.jpg</span></div>
+          </div>
+          <div class="review-body">
+            <div class="review-stars" aria-label="4 de 5 estrellas">
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-filled"><use href="#icon-star"/></svg>
+              <svg class="icon star-empty"><use href="#icon-star-outline"/></svg>
+            </div>
+            <p class="review-quote">Aquí va el comentario real del cliente sobre su experiencia con MADCOR MUEBLES.</p>
+            <div class="review-author">Nombre del cliente<span>Ciudad · Tipo de mueble</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="review-cta reveal">
+        <div class="review-cta-title">¿Ya te hicimos un mueble?</div>
+        <p class="review-cta-desc">Cuéntanos cómo te fue: mándanos tu calificación de 1 a 5, tu comentario y una foto del mueble por WhatsApp, y con gusto lo publicamos aquí.</p>
+        <a href="https://wa.me/573206736373?text=Hola%20H%C3%A9ctor%2C%20quiero%20dejarte%20una%20rese%C3%B1a%20de%20MADCOR%20MUEBLES.%0A%0A*Mi%20calificaci%C3%B3n%20(1%20a%205):*%20%0A*Mi%20comentario%3A*%20%0A%0A(Te%20adjunto%20una%20foto%20del%20mueble%20en%20este%20chat)" target="_blank" rel="noopener" class="btn-primary">
+          <svg class="icon"><use href="#icon-camera"/></svg>Déjanos tu reseña
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ANTES Y DESPUÉS -->
   <section id="procesos">
     <div class="container">
@@ -1342,6 +1538,7 @@
         <ul class="footer-links">
           <li><a href="#nosotros">Nuestra historia</a></li>
           <li><a href="#portafolio">Portafolio</a></li>
+          <li><a href="#resenas">Reseñas</a></li>
           <li><a href="#procesos">Antes y después</a></li>
           <li><a href="#contacto">Contacto</a></li>
           <li><a href="https://wa.me/573206736373?text=Hola%20H%C3%A9ctor%2C%20me%20interesa%20cotizar%20un%20mueble" target="_blank" rel="noopener">Cotización gratis</a></li>
@@ -1461,20 +1658,34 @@
     const portfolioItems = document.querySelectorAll('.portfolio-item');
     let currentSlide = 0;
 
-    function showSlide(i) {
+    const lightboxCaption = document.querySelector('.lightbox-caption');
+    function showSlide(i, animate) {
       currentSlide = (i + PORTFOLIO.length) % PORTFOLIO.length;
       const item = portfolioItems[currentSlide];
       const img = item.querySelector('img');
       const data = PORTFOLIO[currentSlide];
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightboxTitle.textContent = data.title;
-      lightboxDesc.textContent = data.desc;
-      lightboxCount.textContent = 'Proyecto ' + (currentSlide + 1) + ' de ' + PORTFOLIO.length;
-      lightboxCta.href = 'https://wa.me/573206736373?text=' + encodeURIComponent('Hola Héctor, vi el proyecto "' + data.title + '" en la página y quiero cotizar algo similar.');
+      function apply() {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxTitle.textContent = data.title;
+        lightboxDesc.textContent = data.desc;
+        lightboxCount.textContent = 'Proyecto ' + (currentSlide + 1) + ' de ' + PORTFOLIO.length;
+        lightboxCta.href = 'https://wa.me/573206736373?text=' + encodeURIComponent('Hola Héctor, vi el proyecto "' + data.title + '" en la página y quiero cotizar algo similar.');
+      }
+      if (animate) {
+        lightboxImg.classList.add('swapping');
+        lightboxCaption.classList.add('swapping');
+        setTimeout(() => {
+          apply();
+          lightboxImg.classList.remove('swapping');
+          lightboxCaption.classList.remove('swapping');
+        }, 150);
+      } else {
+        apply();
+      }
     }
     function openLightbox(i) {
-      showSlide(i);
+      showSlide(i, false);
       lightbox.classList.add('open');
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1488,8 +1699,8 @@
       item.addEventListener('click', () => openLightbox(i));
     });
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-    document.getElementById('lightboxPrev').addEventListener('click', () => showSlide(currentSlide - 1));
-    document.getElementById('lightboxNext').addEventListener('click', () => showSlide(currentSlide + 1));
+    document.getElementById('lightboxPrev').addEventListener('click', () => showSlide(currentSlide - 1, true));
+    document.getElementById('lightboxNext').addEventListener('click', () => showSlide(currentSlide + 1, true));
     lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('open')) return;
@@ -1499,12 +1710,25 @@
     });
 
     // ===== SLIDER ANTES / DESPUÉS =====
-    document.querySelectorAll('.ba-range').forEach((range) => {
-      const slider = range.closest('.ba-slider');
+    document.querySelectorAll('.ba-slider').forEach((slider) => {
+      const range = slider.querySelector('.ba-range');
       range.addEventListener('input', () => {
+        slider.classList.remove('hint');
         slider.style.setProperty('--pos', range.value + '%');
       });
+      range.addEventListener('pointerdown', () => slider.classList.remove('hint'), { once: true });
     });
+    // Pista de descubribilidad: al aparecer por primera vez, el slider "respira" para
+    // sugerir que se puede arrastrar (una sola vez, se cancela si el usuario ya interactúa).
+    const baHintObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('hint');
+          baHintObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.ba-slider').forEach((s) => baHintObserver.observe(s));
 
     // ===== FORM → WHATSAPP =====
     function enviarWhatsApp() {
@@ -1521,33 +1745,35 @@
       window.open(`https://wa.me/573206736373?text=${texto}`, '_blank');
     }
 
-    // ===== HEADER SOMBRA AL HACER SCROLL + BOTÓN VOLVER ARRIBA =====
+    // ===== HEADER SOMBRA + BOTÓN VOLVER ARRIBA (un solo listener, agrupado con rAF) =====
     const siteHeader = document.getElementById('siteHeader');
     const toTopBtn = document.getElementById('toTop');
-    window.addEventListener('scroll', () => {
+    let scrollTicking = false;
+    function onScroll() {
       siteHeader.classList.toggle('scrolled', window.scrollY > 10);
       toTopBtn.classList.toggle('visible', window.scrollY > 600);
-    });
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(onScroll);
+        scrollTicking = true;
+      }
+    }, { passive: true });
     toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // ===== ACTIVE NAV LINK ON SCROLL =====
-    const sections = document.querySelectorAll('section[id]');
+    // ===== ENLACE ACTIVO DEL MENÚ (IntersectionObserver en vez de listener de scroll) =====
     const navLinksAll = document.querySelectorAll('.nav-links a');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (window.scrollY >= sectionTop) {
-          current = section.getAttribute('id');
-        }
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.getAttribute('id');
+        navLinksAll.forEach((link) => {
+          link.style.color = link.getAttribute('href') === `#${id}` ? 'var(--gold)' : '';
+        });
       });
-      navLinksAll.forEach(link => {
-        link.style.color = '';
-        if (link.getAttribute('href') === `#${current}`) {
-          link.style.color = 'var(--gold)';
-        }
-      });
-    });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('section[id]').forEach((section) => sectionObserver.observe(section));
   </script>
 </body>
 </html>
